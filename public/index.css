@@ -1,14 +1,435 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=SF+Pro+Display:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap");
 
-body {
-	font-family: "Roboto", Arial, Helvetica, sans-serif;
-	margin: 0;
-	background: #111;
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
+:root {
+	--primary-dark: #1a1a1a;
+	--secondary-dark: #2a2a2a;
+	--tertiary-dark: #3a3a3a;
+	--accent-neon: #0071e3;
+	--accent-neon-light: #0077ed;
+	--text-primary: #e0e0e0;
+	--text-secondary: #b0b0b0;
+	--border-dark: #404040;
 }
 
+* {
+	box-sizing: border-box;
+}
+
+html.fullscreen-mode {
+	overflow: hidden;
+}
+
+body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+	margin: 0;
+	background: var(--primary-dark);
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	overflow: hidden;
+	color: var(--text-primary);
+}
+
+.browser-container {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	background: var(--primary-dark);
+	transition: all 0.3s ease;
+}
+
+.browser-container.fullscreen {
+	--header-height: 0px;
+}
+
+/* ===== Browser Header ===== */
+.browser-header {
+	background: var(--secondary-dark);
+	border-bottom: 1px solid var(--border-dark);
+	display: flex;
+	flex-direction: column;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease;
+	height: auto;
+}
+
+.browser-container.fullscreen .browser-header {
+	display: none;
+}
+
+/* ===== Tab Bar ===== */
+
+.tab-bar {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 0 8px;
+	background: var(--secondary-dark);
+	border-bottom: 1px solid var(--border-dark);
+	height: 44px;
+	overflow-x: auto;
+	overflow-y: hidden;
+	scrollbar-width: thin;
+	scrollbar-color: var(--accent-neon) var(--secondary-dark);
+	position: relative;
+	gap: 2px;
+}
+
+
+.tab-bar::-webkit-scrollbar {
+	height: 6px;
+}
+
+.tab-bar::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.tab-bar::-webkit-scrollbar-thumb {
+	background: #c0c0c0;
+	border-radius: 3px;
+}
+
+.tab-bar::-webkit-scrollbar-thumb:hover {
+	background: #a0a0a0;
+}
+
+.tab {
+	display: flex;
+	align-items: center;
+	padding: 0 12px;
+	height: 44px;
+	background: transparent;
+	border: 1px solid transparent;
+	border-bottom: none;
+	margin-right: 2px;
+	cursor: pointer;
+	border-radius: 12px 12px 0 0;
+	transition: background 0.2s, color 0.2s, border-color 0.2s;
+	white-space: nowrap;
+	font-size: 13px;
+	color: var(--text-secondary);
+	max-width: 240px;
+	min-width: 120px;
+}
+
+.tab:hover:not(.active) {
+	background: #454545;
+	color: var(--text-primary);
+}
+
+.tab.active {
+	background: var(--primary-dark);
+	color: var(--text-primary);
+	border: 1px solid var(--border-dark);
+	border-bottom: 1px solid var(--primary-dark);
+	box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.tab-icon {
+	margin-right: 8px;
+	font-size: 14px;
+}
+
+.tab-title {
+	flex: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.tab-close {
+	background: none;
+	border: none;
+	padding: 0 4px;
+	margin-left: 8px;
+	cursor: pointer;
+	font-size: 18px;
+	color: var(--text-secondary);
+	opacity: 0;
+	transition: opacity 0.2s, color 0.2s;
+}
+
+.tab:hover .tab-close {
+	opacity: 1;
+}
+
+.tab-close:hover {
+	color: var(--accent-neon);
+}
+
+.tab-add {
+	background: none;
+	border: none;
+	padding: 0 12px;
+	height: 44px;
+	cursor: pointer;
+	font-size: 20px;
+	color: var(--text-secondary);
+	transition: color 0.2s, background 0.2s;
+	border-radius: 4px;
+	margin-left: 2px;
+}
+
+.tab-add:hover {
+	background: #e0e0e0;
+	color: var(--accent-neon);
+}
+
+/* Keep the user badge from pushing tabs too much */
+.tab-bar > .user-badge-tab {
+	align-self: center;
+}
+
+
+/* ===== User Badge in Tab Bar ===== */
+.user-badge-tab {
+	margin-left: auto;
+	background: var(--accent-neon);
+	color: #fff;
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	white-space: nowrap;
+}
+
+
+/* ===== Toolbar ===== */
+.toolbar {
+	display: flex;
+	align-items: center;
+	padding: 8px 12px;
+	height: 56px;
+	background: var(--secondary-dark);
+	gap: 8px;
+	border-bottom: 1px solid var(--border-dark);
+}
+
+.toolbar-buttons {
+	display: flex;
+	gap: 4px;
+}
+
+.toolbar-btn {
+	background: transparent;
+	border: 1px solid transparent;
+	padding: 6px 8px;
+	cursor: pointer;
+	border-radius: 6px;
+	font-size: 16px;
+	transition: background 0.2s, border-color 0.2s, color 0.2s;
+	color: var(--text-secondary);
+}
+
+.toolbar-btn:hover {
+	background: #e0e0e0;
+	border-color: transparent;
+	color: var(--text-primary);
+}
+
+.toolbar-btn:active {
+	background: #d0d0d0;
+	color: var(--accent-neon);
+}
+
+/* ===== Toolbar Brand ===== */
+.toolbar-brand {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 12px;
+	padding: 0 8px;
+}
+
+.toolbar-logo {
+	height: 24px;
+	width: auto;
+	object-fit: contain;
+}
+
+.toolbar-title {
+	font-weight: 600;
+	font-size: 14px;
+	color: var(--text-primary);
+}
+
+.user-badge {
+	background: var(--accent-neon);
+	color: #fff;
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+}
+
+/* ===== Address Bar ===== */
+.address-bar-container {
+	display: flex;
+	flex: 1;
+	margin: 0 8px;
+}
+
+.address-bar {
+	flex: 1;
+	padding: 8px 14px;
+	border: 1px solid var(--border-dark);
+	border-radius: 8px;
+	background: #252323;
+	font-family: inherit;
+	font-size: 14px;
+	color: gold;
+	outline: none;
+	transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.address-bar::placeholder {
+	color: var(--text-secondary);
+}
+
+.address-bar:hover {
+	background: #242222;
+	border-color: #1a1a20;
+}
+
+.address-bar:focus {
+	border-color: var(--accent-neon);
+	box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+	background: #242222;
+}
+
+/* ===== Browser Content Area ===== */
+.browser-content {
+	flex: 1;
+	display: flex;
+	overflow: hidden;
+	position: relative;
+	background: var(--primary-dark);
+}
+
+/* Wallpaper when nothing is loaded (on iframe container) */
+#iframe-container {
+	position: relative;
+}
+
+/* Video wallpaper behind the iframe */
+#iframe-container {
+	position: relative;
+}
+
+.browser-wallpaper {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	z-index: 0;
+	filter: saturate(1.05) brightness(0.85);
+	opacity: 0.35;
+	pointer-events: none;
+}
+
+
+
+#iframe-container > * {
+	position: relative;
+	z-index: 1;
+}
+
+
+
+
+.tab-content {
+	display: none;
+	flex: 1;
+	overflow-y: auto;
+	width: 100%;
+	height: 100%;
+	scrollbar-width: thin;
+	scrollbar-color: #c0c0c0 transparent;
+}
+
+.tab-content::-webkit-scrollbar {
+	width: 8px;
+}
+
+.tab-content::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.tab-content::-webkit-scrollbar-thumb {
+	background: #c0c0c0;
+	border-radius: 4px;
+}
+
+.tab-content::-webkit-scrollbar-thumb:hover {
+	background: #a0a0a0;
+}
+
+.tab-content.active {
+	display: flex;
+	flex-direction: column;
+}
+
+.content-wrapper {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	overflow-y: auto;
+	display: none;
+}
+
+#iframe-container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	position: relative;
+}
+
+#iframe-container.active {
+	display: flex;
+	flex-direction: column;
+}
+
+#iframe-container iframe {
+	flex: 1;
+	border: none;
+	width: 100%;
+	height: 100%;
+}
+
+/* ===== Error Container ===== */
+.error-container {
+	display: none;
+	padding: 12px;
+	background: #fef1f0;
+	border-top: 1px solid #f0d0cc;
+	border-bottom: 1px solid #f0d0cc;
+}
+
+.error-container.show {
+	display: block;
+}
+
+#sj-error {
+	color: #c41e3a !important;
+	white-space: pre-wrap;
+	margin: 0;
+	font-size: 13px;
+}
+
+#sj-error-code {
+	font-size: 12px;
+	color: var(--text-secondary);
+	font-family: "Courier New", Courier, monospace;
+	margin-top: 8px;
+	margin-bottom: 0;
+}
+
+/* ===== Utility Classes ===== */
 .flex-center {
 	display: flex;
 	justify-content: center;
@@ -17,7 +438,7 @@ body {
 .header-center {
 	align-items: center;
 	flex-direction: column;
-	margin-top: 10%;
+	margin-top: 5%;
 }
 
 .left-margin {
@@ -26,134 +447,7 @@ body {
 
 #sj-frame {
 	border: none;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
-	background-color: #111;
-}
-
-#sj-error {
-	color: #ff6666 !important;
-	white-space: pre-wrap;
-}
-
-#sj-error-code {
-	font-size: 12px;
-	color: #fff;
-	font-family: "Courier New", Courier, monospace;
-}
-
-.logo {
-	height: 25vh;
-}
-
-.logo-wrapper .text {
-	font-size: 75px;
-	color: #fff;
-}
-
-.logo-wrapper h1 {
-	color: white;
-}
-
-footer {
-	margin: 0 16px;
-	margin-top: auto;
-	display: flex;
-	flex-direction: column;
-	line-height: 30px;
-	margin-bottom: 20px;
-}
-
-footer > div {
-	display: flex;
-	justify-content: left;
-	align-items: center;
-	flex-wrap: wrap;
-	margin-bottom: 15px;
-}
-
-footer a,
-footer span {
-	margin: 0 15px;
-	text-decoration: none;
-	color: #fff;
-	font-size: 15px;
-}
-
-footer a {
-	cursor: pointer;
-}
-
-footer a:hover {
-	text-decoration: underline;
-}
-
-.desc p {
-	width: 560px;
-	color: rgba(253, 253, 253, 0.514);
-}
-
-#sj-address {
-	background: none;
-	font-family: inherit;
-	padding: 0px 17px;
-	height: 48px;
-	border: 1px solid rgb(255, 255, 255, 0.2);
-	color: var(--text-color);
-	border-radius: 3px;
-	outline: none;
-	width: 350px;
-	margin-top: 5px;
-	border-radius: 50px;
-	color: #fff;
-	transition: border-radius 0.1s;
-}
-
-#sj-address:focus {
-	border: 1px solid rgba(253, 253, 253, 0.514);
-	border-radius: 6px;
-}
-
-.credit {
-	border-radius: 10px;
-	padding: 10px;
-	display: block;
-	border: #fff 1px solid;
-	color: #fff;
-	display: flex;
-	flex-wrap: wrap;
-	margin-bottom: 15px;
-}
-
-.credit label {
-	margin-left: auto;
-	margin-right: 15px;
-}
-
-.credit a,
-.credit label {
-	color: white;
-	text-decoration: underline;
-	text-align: right;
-}
-
-.credit pre {
-	display: none;
 	width: 100%;
-}
-
-.credit label::after {
-	content: "show license";
-	cursor: pointer;
-}
-
-.credit input:checked + label::after {
-	content: "hide license";
-}
-
-.credit input:checked ~ pre {
-	display: block;
+	height: 100%;
+	background-color: var(--primary-dark);
 }

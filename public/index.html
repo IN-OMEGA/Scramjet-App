@@ -6,9 +6,8 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
 		/>
-		<title>Scramjet</title>
+		<title>Browser | USER09363</title>
 
-		<link rel="shortcut icon" content="favicon.webp" />
 	
 		<script src="/scram/scramjet.all.js"></script>
 		<script src="/baremux/index.js"></script>
@@ -19,48 +18,66 @@
 		<script src="index.js" defer></script>
 	</head>
 
-	<body>
-		<div title="Scramjet Logo" class="flex-center logo-wrapper header-center">
-			<img class="logo" src="sj.png" alt="Scramjet" />
-			<h1>Scramjet | MW</h1>
+	<body class="browser-container">
+		<!-- Browser Header -->
+		<div class="browser-header">
+			<!-- Tab Bar -->
+			<div class="tab-bar">
+				<div class="tab active" data-tab="0">
+					<span class="tab-icon">🌐</span>
+					<span class="tab-title">New Tab</span>
+					<button class="tab-close">×</button>
+				</div>
+				<button class="tab-add">+</button>
+				<span class="user-badge-tab">USER09363</span>
+			</div>
+
+			<!-- Toolbar -->
+			<div class="toolbar">
+				<div class="toolbar-buttons">
+					<button class="toolbar-btn" title="Back">←</button>
+					<button class="toolbar-btn" title="Forward">→</button>
+					<button class="toolbar-btn" title="Reload">⟳</button>
+					<button class="toolbar-btn" title="Home">⌂</button>
+				</div>
+
+				<!-- Address Bar -->
+				<form id="sj-form" class="address-bar-container">
+					<input
+						id="sj-search-engine"
+						value="https://www.google.com/search?q=%s"
+						type="hidden"
+					/>
+					<input 
+						id="sj-address" 
+						type="text" 
+						placeholder="Search or enter URL"
+						class="address-bar"
+					/>
+				</form>
+
+				<div class="toolbar-buttons">
+					<button class="toolbar-btn" title="Settings">⋮</button>
+				</div>
+			</div>
 		</div>
-		<div class="flex-center desc left-margin">
-			<p>
-				Scramjet is an experimental interception based web proxy designed to
-				evade internet censorship, bypass arbitrary web browser restrictions and
-				innovate web proxy technologies.
-			</p>
+		
+			<!-- Browser Content Area -->
+		<div class="browser-content">
+			<!-- Tab Content -->
+			<div class="tab-content active" data-tab="0">
+				<!-- iFrame Container (watermark / wallpaper sits behind) -->
+				<div id="iframe-container">
+					<video class="browser-wallpaper" src="ps3.mp4" autoplay loop muted playsinline></video>
+				</div>
+			</div>
 		</div>
 
-		<form id="sj-form" class="flex-center">
-			<input
-				id="sj-search-engine"
-				value="https://www.google.com/search?q=%s"
-				type="hidden"
-			/>
-			<input id="sj-address" type="text" placeholder="Search the web freely" />
-		</form>
-		<div class="desc left-margin">
+
+		<!-- Error Display -->
+		<div class="error-container">
 			<p id="sj-error"></p>
 			<pre id="sj-error-code"></pre>
 		</div>
-		<footer>
-			<div>
-				<a
-					title="The Mercury Workshop GitHub organization"
-					href="https://github.com/MercuryWorkshop"
-					>Mercury Workshop</a
-				>
-				<a
-					title="The example demo app for Scramjet"
-					href="https://github.com/MercuryWorkshop/Scramjet-Demo"
-					>GitHub</a
-				>
-				<a title="License information" href="credits.html">Credits</a>
-			</div>
-			<div>
-				<span>Scramjet &copy; MW 2025</span>
-			</div>
-		</footer>
 	</body>
 </html>
